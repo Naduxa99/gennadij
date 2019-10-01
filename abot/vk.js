@@ -31,7 +31,7 @@ function getMessages(user_id, n) {
 			user_id: user_id,
 			count: n
 		}).then(({vkr}) => {
-			resolve(vkr);
+			resolve(vkr.items);
 		});
 	});
 }

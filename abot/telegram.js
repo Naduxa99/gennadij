@@ -1,13 +1,21 @@
 const Telegraf = require('telegraf');
-const chats = process.env.TELEGRAM_CHATS;
+const chats = JSON.parse(process.env.TELEGRAM_CHATS);
 let bot;
 
-function init() {
+function init(lookFunction, stopFunction) {
 	return new Promise(function(resolve, reject) {
 		bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
+
 		bot.command('start', ctx => {
 			console.log(ctx.message.chat.id);
+			ctx.reply('👍');
 		});
+		bot.command('start@gennadij_detectit_bot', ctx => {
+			console.log(ctx.message.chat.id);
+			ctx.reply('👍');
+		});
+
+		bot.startPolling();
 		resolve(bot);
 	});
 }
@@ -20,13 +28,12 @@ function sendMessage(id,message) {
 
 function sendMessageAll(message) {
 	chats.forEach(function(chatId) {
-		sendMessage(chatId, message).then(function(result) {
-			console.log(result);
-		});
+		sendMessage(chatId, message);
 	})
 }
 
 module.exports = {
 	init,
-	sendMessageAll
+	sendMessageAll,
+	sendMessage
 };
